@@ -9,7 +9,7 @@ return;
         let url = `http://api.wolframalpha.com/v1/conversation.jsp?appid=PKEX2L-X3HXQHTEJQ&i=${args.join(" ")}`
         get(url).then(res => {
 if(res.body.error){
-return message.reply("I'm not as smart as the Alpha :(")
+return message.reply("STFU I'M NOT SMART REEEEE")
 }
             const embed = new Discord.RichEmbed()
             .setColor("fea5ff")
