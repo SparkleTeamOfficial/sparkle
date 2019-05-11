@@ -53,7 +53,7 @@ const loadCommands = module.exports.loadCommands = (dir = "./commands/") => {
 
             let props = require(`${dir}${file}`); // defining props for each file for each dir
 
-            bot.commands.set(props.command.name, props); // giving name to the command
+            bot.commands.set(props.command, props); // giving name to the command
 
             if (props.command.aliases) props.command.aliases.forEach(alias => {
                 bot.aliases.set(alias, props.command.name); // giving aliases to the command [second name]
