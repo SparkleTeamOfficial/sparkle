@@ -53,7 +53,7 @@ const loadCommands = module.exports.loadCommands = (dir = "./commands/") => {
 
             let props = require(`${dir}${file}`); // defining props for each file for each dir
 
-            bot.commands.set(props.command, props); // giving name to the command
+            bot.commands.set(props.command.name, props); // giving name to the command
 
             if (props.command.aliases) props.command.aliases.forEach(alias => {
                 bot.aliases.set(alias, props.command.name); // giving aliases to the command [second name]
@@ -108,30 +108,6 @@ bot.on("message", async message => {
 
 
     if (!message.content.startsWith(prefix)) return;
-
-    /* --------------------------------------------------------------------------------------------------
-                                            JOINING EVENT                                               
-       --------------------------------------------------------------------------------------------------
-    */
-
-   bot.on("guildMemberAdd", member => {
-    console.log("someone joined a server.");
-    if(member.guild.id == "524971620016586753"){
-    let welcomechannel = member.guild.channels.find(c => c.id === "524971620599857152");
-    if (!welcomechannel) return;
-    welcomechannel.send(`Welcome to Sparkle's Support server, <@${member.id}>! Enjoy your stay. Make sure to read <#524971728598728779>! Don't forget to wiggle by <#524972042626531328> to check our amazing partners (:\nDon't forget your :tropical_drink:!`);
-    let UserJoinEm = new Discord.RichEmbed()
-        .setAuthor(member.user.tag, member.user.displayAvatarURL)
-        .setThumbnail(member.user.displayAvatarURL)
-        .setTitle("MEMBER JOINED!")
-        .setFooter(`ID: ${member.id} || ${date.toLocaleDateString('eng-GB', options)}`)
-        .setColor("#0078ff")
-        .setDescription(`**Account created at: ${member.user.createdAt.toLocaleDateString('eng-GB', options)}**\nJoin Position: ${member.guild.members.size}`)
-    bot.channels.get("576113562481590273").send(UserJoinEm)
-    } else {
-        return;
-    }
-});
 
 /* --------------------------------------------------------------------------------------------------
                                             RUNNING THE COMMAND                                                
