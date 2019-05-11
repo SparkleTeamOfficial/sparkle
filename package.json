@@ -1,0 +1,34 @@
+{
+  "name": "sparkle",
+  "version": "1.0.0",
+  "description": "sparkle is a public bot with the main focus on creating fun Discord games.",
+  "main": "sparkle.js",
+  "dependencies": {
+    "base-64": "^0.1.0",
+    "beautify": "^0.0.8",
+    "discord.js": "^11.4.2",
+    "fs": "0.0.1-security",
+    "hastebin-gen": "^1.3.1",
+    "ms": "^2.1.1",
+    "snekfetch": "^4.0.4",
+    "superagent": "^4.1.0",
+    "translate": "^1.0.3",
+    "utf8": "^3.0.0",
+    "weather-js": "^2.0.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/HooRiiZooN/Sparkle.git"
+  },
+  "author": "Joey Matthews",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/HooRiiZooN/Sparkle/issues"
+  },
+  "homepage": "https://github.com/HooRiiZooN/Sparkle#readme",
+  "keywords": []
+}
