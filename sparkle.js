@@ -20,7 +20,6 @@ const options = {
 };
 const date = new Date();
 const JoeID = "281667533453524994";
-const MarkID = "339487611917697025";
 
 /* --------------------------------------------------------------------------------------------------
                                         EVENTS CALLER                                                
@@ -34,7 +33,34 @@ require('./events/handler')(bot)
    --------------------------------------------------------------------------------------------------
 */
 
+bot.commands = new Discord.Collection();
+bot.aliases = new Discord.Collection();
 
+const loadCommands = module.exports.loadCommands = (dir = "./commands/") => {
+    fs.readdir(dir, (error, files) => { // Reading the Dir
+        if (error) {
+            console.log(error)
+        }
+
+        files.forEach((file) => { // reading Files from each dir
+            if (fs.lstatSync(dir + file).isDirectory()) {
+                loadCommands(dir + file + "/");
+                return;
+            }
+
+            delete require.cache[require.resolve(`${dir}${file}`)];
+
+            let props = require(`${dir}${file}`); // defining props for each file for each dir
+
+            bot.commands.set(props.command.name, props); // giving name to the command
+
+            if (props.command.aliases) props.command.aliases.forEach(alias => {
+                bot.aliases.set(alias, props.command.name); // giving aliases to the command [second name]
+            });
+        });
+    });
+};
+loadCommands();
 
 
 /* --------------------------------------------------------------------------------------------------
@@ -54,11 +80,11 @@ bot.on("message", async message => {
        --------------------------------------------------------------------------------------------------
     */
 
-    let prefixes = ['>', '$', 'sparkle.', `<@${bot.user.id}> `];
+    let prefixes = ['>', 'UwU', `<@${bot.user.id}> `];
     if (message.author.id === ("281667533453524994")) {
-        prefixes = ['>', '$', 'sparkle.', `<@${bot.user.id}> `, 'niels.', 'sparkleadmin.', 'dev.'];
+        prefixes = ['>', 'UwU', 'dev.', 'Sdev.', `<@${bot.user.id}> `];
     } else {
-        prefixes = ['>', '$', 'sparkle.', `<@${bot.user.id}> `];
+        prefixes = ['>', 'UwU', `<@${bot.user.id}> `];
     }
     let prefix = false;
     for (const thisPrefix of prefixes) {
@@ -82,10 +108,10 @@ bot.on("message", async message => {
 
     if (!message.content.startsWith(prefix)) return;
 
-/* --------------------------------------------------------------------------------------------------
+    /* --------------------------------------------------------------------------------------------------
                                             RUNNING THE COMMAND                                                
        --------------------------------------------------------------------------------------------------
-*/
+    */
 
     if (command) {
         if (!command.command.enabled) return;
@@ -96,13 +122,13 @@ bot.on("message", async message => {
             .setAuthor(message.author.tag, message.author.displayAvatarURL)
             .setFooter(date.toLocaleDateString('eng-GB', options))
             .setDescription(`<@${message.author.id}> used \`${command.command.name}\` in <#${message.channel.id}>`)
-            .setColor("#76EE00")
+            .setColor("0xFFB6C1")
         if (message.author.id == JoeID || message.author.id == MarkID) {
-            bot.channels.get("532942584625233940").send(CommandUsedEm).then((msg) => {
+            bot.channels.get("525030705839996928").send(CommandUsedEm).then((msg) => {
                 msg.delete(10000)
             })
         } else {
-            bot.channels.get("532942584625233940").send(CommandUsedEm)
+            bot.channels.get("525030705839996928").send(CommandUsedEm)
         }
 
 
@@ -117,6 +143,30 @@ bot.on("message", async message => {
     */
 });
 
+
+/* --------------------------------------------------------------------------------------------------
+                                        JOINING EVENT                                                 
+   --------------------------------------------------------------------------------------------------
+*/
+
+bot.on("guildMemberAdd", member => {
+    console.log("someone joined a server.");
+    if(member.guild.id == "524971620016586753"){
+    let welcomechannel = member.guild.channels.find(c => c.id === "524971620599857152");
+    if (!welcomechannel) return;
+    welcomechannel.send(`Welcome to Sparkle's Support server, <@${member.id}>! Enjoy your stay. Make sure to read <#524971728598728779>! Don't forget to wiggle by <#524972042626531328> to check our amazing partners (:\nDon't forget your :tropical_drink:!`);
+    let UserJoinEm = new Discord.RichEmbed()
+        .setAuthor(member.user.tag, member.user.displayAvatarURL)
+        .setThumbnail(member.user.displayAvatarURL)
+        .setTitle("MEMBER JOINED!")
+        .setFooter(`ID: ${member.id} || ${date.toLocaleDateString('eng-GB', options)}`)
+        .setColor("0xFFB6C1")
+        .setDescription(`**Account created at: ${member.user.createdAt.toLocaleDateString('eng-GB', options)}**\nJoin Position: ${member.guild.members.size}`)
+    bot.channels.get("525030705839996928").send(UserJoinEm)
+    } else {
+        return;
+    }
+});
 
 
 /* --------------------------------------------------------------------------------------------------
@@ -146,9 +196,9 @@ bot.on('messageDelete', async (message) => {
         .setDescription(`<@${user.id}> Deleted a message in <#${message.channel.id}>.`)
         .setTitle("MESSAGE DELETED!")
         .setFooter(`ID: ${user.id} || ${date.toLocaleDateString('eng-GB', options)}`)
-        .setColor("#C80000")
+        .setColor("0xFFB6C1")
         .addField("Message", message.content)
-        bot.channels.get("532942584625233940").send(msgDeletedEm)
+        bot.channels.get("525030705839996928").send(msgDeletedEm)
 })
     
 
@@ -157,4 +207,4 @@ bot.on('messageDelete', async (message) => {
    --------------------------------------------------------------------------------------------------
 */
 
-bot.login(process.env.BOT_TOKEN)
+bot.login(process.env.BOT_TOKEN);
