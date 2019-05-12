@@ -34,34 +34,7 @@ require('./events/handler')(bot)
    --------------------------------------------------------------------------------------------------
 */
 
-bot.commands = new Discord.Collection();
-bot.aliases = new Discord.Collection();
 
-const loadCommands = module.exports.loadCommands = (dir = "./commands/") => {
-    fs.readdir(dir, (error, files) => { // Reading the Dir
-        if (error) {
-            console.log(error)
-        }
-
-        files.forEach((file) => { // reading Files from each dir
-            if (fs.lstatSync(dir + file).isDirectory()) {
-                loadCommands(dir + file + "/");
-                return;
-            }
-
-            delete require.cache[require.resolve(`${dir}${file}`)];
-
-            let props = require(`${dir}${file}`); // defining props for each file for each dir
-
-            
-
-            if (props.command.aliases) props.command.aliases.forEach(alias => {
-                bot.aliases.set(alias, props.command.name); // giving aliases to the command [second name]
-            });
-        });
-    });
-};
-loadCommands();
 
 
 /* --------------------------------------------------------------------------------------------------
